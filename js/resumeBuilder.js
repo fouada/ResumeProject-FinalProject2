@@ -1,6 +1,7 @@
 /*
 This is empty on purpose! Your code to build the resume will go here.
  */
+
 var bio = {
 	"name": "Fouad Azem",
 	"role": "java/j2ee Developer Expert",
@@ -15,7 +16,7 @@ var bio = {
 		"SPRING", "MAVEN", "Bootstrap"],
 	"bioPic": "images/me.jpg"
 
-}
+};
 
 
 var education = {
@@ -26,7 +27,8 @@ var education = {
 			"degree": "BSC",
 			"major": ["CompScience", "mathematics"],
 			"location": "netanya",
-			"dates": "2004-2008"
+			"dates": 2008,
+			"url":"http://www.netanya.ac.il/Pages/default.aspx"
 
 		}
 
@@ -37,28 +39,33 @@ var education = {
 			"title": "Responsive Web Design",
 			"school": "Udacity",
 			"dates": 2015,
+			"url":"https://www.udacity.com/course/viewer#!/c-ud893-nd"
 
 	},
 		{
 			"title": "Responsive web Images",
 			"school": "Udacity",
 			"dates": 2015,
+			"url":"https://www.udacity.com/course/viewer#!/c-ud882-nd"
 
 	},
 		{
 			"title": "javascript Course",
 			"school": "Udacity",
 			"dates": 2015,
+			"url":"https://www.udacity.com/course/viewer#!/c-ud804-nd"
 	},
 
 		{
 			"title": "Jquery Course",
 			"school": "Udacity",
 			"dates": 2015,
+			"url":"https://www.udacity.com/course/viewer#!/c-ud245-nd"
 
 	}
 	]
-}
+
+};
 
 var work = {
 	"jobs": [
@@ -99,7 +106,7 @@ var work = {
 }
 
 	]
-}
+};
 
 
 var projects = {
@@ -108,10 +115,11 @@ var projects = {
 			"title": "Responsive Web Design Project",
 			"dates": "2015",
 			"description": "this Project developed using HTML5 and CSS and Jquery scripts and Menu bar scripts and include using responsive web fundemntal design with Responsive images which looks great on every device",
-			"github url": "https://github.com/fouada/FinalProject1"
+			"url": "https://github.com/fouada/FinalProject1",
+			"images":["images/BOKEH_Small.jpg","images/SUNFLOWER_Small.jpg"]
 }
 	]
-}
+};
 
 bio.display = function() {
 	var formattedName = HTMLheaderName.replace("%data%", bio.name);
@@ -120,8 +128,8 @@ bio.display = function() {
 		.prepend(formattedRole);
 	$("#header")
 		.prepend(formattedName);
-	for (contact in bio.contacts) {
-		var formattedContact = HTMLcontactGeneric.replace("%contact%", contact);
+	for (var contact in bio.contacts) {
+		var formattedContact = HTMLcontactGeneric.replace("%contact%",contact);
 		var formattedContactWithValue = formattedContact.replace("%data%", bio.contacts[
 			contact]);
 		$("#topContacts")
@@ -144,10 +152,10 @@ bio.display = function() {
 		}
 	}
 
-}
+};
 work.display = function() {
 	if (work.jobs.length > 0) {
-		for (job in work.jobs) {
+		for (var job in work.jobs) {
 			$("#workExperience")
 				.append(HTMLworkStart);
 			var formattedEmployer = HTMLworkEmployer.replace("%data%", work.jobs[job].employer);
@@ -165,7 +173,7 @@ work.display = function() {
 		}
 	}
 
-}
+};
 
 
 
@@ -176,7 +184,7 @@ work.display = function() {
 
 
 projects.display = function() {
-	for (project in projects.projects) {
+	for (var project in projects.projects) {
 		$("#projects")
 			.append(HTMLprojectStart);
 
@@ -192,16 +200,24 @@ projects.display = function() {
 			.projects[project].description);
 		$(".project-entry:last")
 			.append(formattedDescription);
+			if(projects.projects[project].images.length>0)
+			{
+				for(var image in projects.projects[project].images)
+				{
+					var formattedImage=HTMLprojectImage.replace("%data%",projects.projects[project].images[image]);
+					$(".project-entry:last").append(formattedImage);
+				}
+			}
 
 
 	}
 
-}
+};
 
 
 education.display = function() {
 	if (education.schools.length > 0) {
-		for (school in education.schools) {
+		for (var school in education.schools) {
 			$("#education")
 				.append(HTMLschoolStart);
 			var schoolName = HTMLschoolName.replace("%data%", education.schools[school]
@@ -224,9 +240,23 @@ education.display = function() {
 				.append(htmlschoolMajor);
 
 		}
+
+			$(".education-entry:last").append(HTMLonlineClasses);
+				for(var onlineCourse in education.onlineCourses)
+				{
+					
+					var onlineCourseTitle = HTMLonlineTitle.replace("%data%",education.onlineCourses[onlineCourse].title);
+					var onlineCourseSchool= HTMLonlineSchool.replace("%data%",education.onlineCourses[onlineCourse].school);
+					var onlineCourseTitleSchool =onlineCourseTitle + onlineCourseSchool;
+					$(".education-entry:last").append(onlineCourseTitleSchool);
+					var onlineSchoolDates=HTMLonlineDates.replace("%data%",education.onlineCourses[onlineCourse].dates);
+					$(".education-entry:last").append(onlineSchoolDates);
+					var onlineSchoolUrl=HTMLonlineURL.replace("%data%",education.onlineCourses[onlineCourse].url);
+					$(".education-entry:last").append(onlineSchoolUrl);
+				}
 	}
 
-}
+};
 bio.display();
 projects.display();
 work.display();
@@ -236,5 +266,9 @@ $('#mapDiv')
 var projectEntry = $('#projects')
 	.find(".project-entry");
 var aChild = projectEntry.find("a");
-aChild.attr("href", projects.projects[0]["github url"]);
+aChild.attr("href", projects.projects[0].url);
 aChild.attr("target", "_blank");
+$('#footerContacts').prepend('<li id="social"><a target="_blank" href="http://digg.com/submit?phase=2&url=https%3A%2F%2Fgithub.com%2Fudacity%2Fresponsive-images&title=Udacity%20nano%20course%3A%20Responsive%20Images&bodytext=Responsive%20images%20for%20your%20sites%20and%20web%20apps&topic=tech_news" class="zocial-digg">Digg</a></li>');
+$('#footerContacts').prepend('<li id="social"><a target="_blank" href="https://plus.google.com/share?url=https://github.com/udacity/responsive-images" class="zocial-googleplus">Google+</a></li>');
+$('#footerContacts').prepend('<li id="social"><a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://github.com/udacity/responsive-images" class="zocial-facebook">Facebook</a></li>');
+$('#footerContacts').prepend('<li id="social"><a target="_blank" href="https://twitter.com/home?status=https://github.com/udacity/responsive-images" class="zocial-twitter">Twitter</a></li>');
